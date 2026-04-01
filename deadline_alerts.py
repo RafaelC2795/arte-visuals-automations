@@ -49,15 +49,15 @@ SCOPES = [
 
 
 def load_env():
-    if not ENV_PATH.exists():
-        print(f"ERRO: .env não encontrado em {ENV_PATH}")
-        sys.exit(1)
-    with open(ENV_PATH) as f:
-        for line in f:
-            line = line.strip()
-            if line and not line.startswith("#") and "=" in line:
-                key, _, value = line.partition("=")
-                os.environ.setdefault(key.strip(), value.strip())
+    # No GitHub Actions as variáveis vêm dos Secrets (já estão no ambiente)
+    # Localmente lê do ficheiro .env se existir
+    if ENV_PATH.exists():
+        with open(ENV_PATH) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, _, value = line.partition("=")
+                    os.environ.setdefault(key.strip(), value.strip())
 
 
 def get_gmail_credentials():
