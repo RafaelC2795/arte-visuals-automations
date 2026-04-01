@@ -1,0 +1,31 @@
+name: Deadline Alerts
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # todos os dias às 8h UTC (9h Portugal no inverno, 8h no verão)
+  workflow_dispatch:       # permite correr manualmente
+
+jobs:
+  send-alerts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install notion-client google-api-python-client google-auth-oauthlib google-auth-httplib2
+
+      - name: Restore Gmail token
+        run: |
+          mkdir -p ~/.claude
+          echo '${{ secrets.GMAIL_TOKEN }}' > ~/.claude/gmail_token_send.json
+
+      - name: Run deadline alerts
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: python deadline_alerts.py
