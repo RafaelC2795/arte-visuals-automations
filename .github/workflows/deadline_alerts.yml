@@ -17,7 +17,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install notion-client google-api-python-client google-auth-oauthlib google-auth-httplib2
+        run: pip install "notion-client==2.3.0" google-api-python-client google-auth-oauthlib google-auth-httplib2
 
       - name: Restore Gmail token
         run: |
