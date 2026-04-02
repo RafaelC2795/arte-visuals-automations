@@ -12,7 +12,6 @@ from pathlib import Path
 from datetime import date, datetime
 
 # ==============================================================================
-NOTION_TOKEN    = os.environ.get("NOTION_TOKEN", "")
 PROJETOS_DB     = "627d6147-63b0-83f2-8677-01ec7f0ac715"
 EMAIL_DESTINO   = "hello@itsartevisuals.com"
 DIAS_ALERTA     = [30, 15, 3]
@@ -117,7 +116,11 @@ def get_projetos(notion: Client) -> list:
 
 def main():
     load_env()
-    notion  = Client(auth=NOTION_TOKEN)
+    notion_token = os.environ.get("NOTION_TOKEN", "")
+    if not notion_token:
+        print("ERRO: NOTION_TOKEN não encontrado")
+        sys.exit(1)
+    notion  = Client(auth=notion_token)
     creds   = get_gmail_credentials()
     gmail   = build("gmail", "v1", credentials=creds)
     hoje    = date.today()
