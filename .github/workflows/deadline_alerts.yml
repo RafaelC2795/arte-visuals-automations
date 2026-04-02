@@ -26,6 +26,7 @@ jobs:
 
       - name: Run deadline alerts
         env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: python deadline_alerts.py
